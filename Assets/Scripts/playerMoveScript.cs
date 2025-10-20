@@ -12,22 +12,45 @@ public class playerMoveScript : MonoBehaviour
     public bool onGround = false;
     public Animator playerAnim;
     public LayerMask groundLayer;
+    public GameObject weapon;
+    public bool SillyMode = false;
+    public LogicScript logic;
+    float delay = 2;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         helper = gameObject.AddComponent<HelperScript>();
+        logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
+        logic.bullets = 30;
+        logic.magCount = 120;
+        delay -= Time.deltaTime;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            reload();
+        }
+        Shoot();
+        if (Input.GetKey(KeyCode.S))
+        {
+            SillyMode = true;
+            print("SillyMode activated");
+        }
+        if (Input.GetKey(KeyCode.Minus))
+        {
+            SillyMode = false;
+            print("SillyMode deactivated");
+        }
+        SillyShoot();
         if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R))
         {
             helper.ResetGame();
         }
-        else if (Input.GetKeyDown(KeyCode.R))
+        else if (Input.GetKeyDown(KeyCode.F1))
         {
             helper.ResetScene();
         }
@@ -178,6 +201,101 @@ public class playerMoveScript : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         playerAnim.SetBool("IsHurt", false);
+    }
+
+    public void Shoot()
+    {
+
+        if (logic.bullets > 0)
+        {
+            int moveDirection = 1;
+
+            if (delay >= 0)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+
+                    if (logic.bullets > 0)
+                    {
+                        GameObject clone;
+                        clone = Instantiate(weapon, transform.position, transform.rotation);
+                        Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
+                        rb.linearVelocity = transform.right * 15;
+                        rb.transform.position = new Vector3(transform.position.x, transform.position.y +
+                        2, transform.position.z + 1);
+                        logic.BulletsFired(1);
+
+
+                    }
+
+                    else
+                    {
+                        print("Out of ammo");
+                    }
+                }
+            }
+        }
+        
+        
+        
+
+    }
+
+    public void SillyShoot()
+    {
+        if (SillyMode == true)
+        {
+            
+                if (Input.GetMouseButton(0))
+                {
+
+                    if (logic.bullets > 0)
+                    {
+                        GameObject clone;
+                        clone = Instantiate(weapon, transform.position, transform.rotation);
+                        Rigidbody2D rb = clone.GetComponent<Rigidbody2D>();
+                        rb.linearVelocity = transform.right * 15;
+                        rb.transform.position = new Vector3(transform.position.x, transform.position.y +
+                        2, transform.position.z + 1);
+                        logic.BulletsFired(1);
+
+                    }
+
+
+
+                    else
+                    {
+                        print("Out of ammo");
+                    }
+                }
+
+
+
+            
+
+            
+            
+        }
+        
+        
+    }
+    public void reload()
+    {
+        if (logic.magCount > 0)
+        {
+            if (logic.bullets ==0)
+            {
+                logic.bullets = 30;
+                logic.MagazineCount(30);
+            }
+            
+        }
+
+        else
+        {
+            print("Empty mag");
+        }
+
     }
 
 }
