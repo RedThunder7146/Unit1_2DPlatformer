@@ -1,7 +1,10 @@
 using Microsoft.Unity.VisualStudio.Editor;
+using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class playerMoveScript : MonoBehaviour
 {
@@ -16,6 +19,7 @@ public class playerMoveScript : MonoBehaviour
     public bool SillyMode = false;
     public LogicScript logic;
     float delay = 2;
+    public GameObject Reloading;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -32,7 +36,7 @@ public class playerMoveScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            reload();
+            StartCoroutine(reload());
         }
         Shoot();
         if (Input.GetKey(KeyCode.S))
@@ -279,14 +283,17 @@ public class playerMoveScript : MonoBehaviour
         
         
     }
-    public void reload()
+    public IEnumerator reload()
     {
         if (logic.magCount > 0)
         {
             if (logic.bullets ==0)
             {
+                Reloading.SetActive(true);
+                yield return new WaitForSecondsRealtime(2.5f);
                 logic.bullets = 30;
                 logic.MagazineCount(30);
+                Reloading.SetActive(false);
             }
             
         }
