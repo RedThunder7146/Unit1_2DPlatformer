@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1035353338088337400}
   m_Layer: 0
   m_Name: Slime
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,7 +113,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   slimeRigidBody: {fileID: 5160723018506613076}
-  logicScript: {fileID: 0}
+  logic: {fileID: 0}
+  enemeyHealth: {fileID: 0}
 --- !u!70 &4776709609769262757
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

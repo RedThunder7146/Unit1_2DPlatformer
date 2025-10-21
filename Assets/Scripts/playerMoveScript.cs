@@ -20,6 +20,7 @@ public class playerMoveScript : MonoBehaviour
     public LogicScript logic;
     float delay = 2;
     public GameObject Reloading;
+    public GameObject outOfAmmo;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -300,7 +301,9 @@ public class playerMoveScript : MonoBehaviour
 
         else
         {
-            print("Empty mag");
+            outOfAmmo.SetActive(true);
+            yield return new WaitForSecondsRealtime(2.5f);
+            outOfAmmo.SetActive(false);
         }
 
     }

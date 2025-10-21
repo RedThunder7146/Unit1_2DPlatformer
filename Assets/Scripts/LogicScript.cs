@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 
 
@@ -16,6 +17,8 @@ public class LogicScript : MonoBehaviour
     public Text bulletsFired;
     public Text MagCount;
     public int magCount;
+    public TextMeshPro enemyHealth;
+    public int enHealth;
     [ContextMenu("Increase Score")]
     public void addScore(int ScoreToAdd)
     {
@@ -53,5 +56,11 @@ public class LogicScript : MonoBehaviour
     {
         magCount -= mag;
         MagCount.text = magCount.ToString();
+    }
+
+    public void EnemyHealth(int enehealth)
+    {
+        enHealth -= enehealth;
+        enemyHealth.text = enHealth.ToString();
     }
 }

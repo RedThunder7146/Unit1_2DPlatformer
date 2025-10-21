@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
@@ -8,13 +9,16 @@ public class EnemyAI : MonoBehaviour
     public Animator SlimeAnim;
     public LayerMask groundLayer;
     public Rigidbody2D slimeRigidBody;
-    public LogicScript logicScript;
+    public LogicScript logic;
     float xvel = 1;
     HelperScript helper;
+    public TextMeshPro enemyHealth;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         helper = gameObject.AddComponent<HelperScript>();
+        logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
+        logic.enHealth = 3;
     }
 
     // Update is called once per frame
@@ -39,17 +43,17 @@ public class EnemyAI : MonoBehaviour
                 SlimeAnim.SetBool("IsRunning", true);
             }
         }
-            
+        EnemyDeath();
         
         if (xvel ==0)
         {
             SlimeAnim.SetBool("IsRunning", false);
         }
-        if (logicScript.health == 3)
+        if (logic.health == 3)
         {
             slimeRigidBody.linearVelocityX = 1f * xvel * Speed;
         }
-        else if (logicScript.health == 2)
+        else if (logic.health == 2)
         {
             slimeRigidBody.linearVelocityX = 2f * xvel * Speed;
         }
@@ -93,6 +97,23 @@ public class EnemyAI : MonoBehaviour
         return hitSomething;
 
     }
-    
+
+    public void EnemyDeath()
+    {
+        if(logic.enHealth == 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+   
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Bullet")
+        {
+            logic.EnemyHealth(1);
+
+        }
+    }
+
 
 }
