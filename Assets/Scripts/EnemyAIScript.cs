@@ -1,5 +1,4 @@
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 
 public class EnemyAI : MonoBehaviour
